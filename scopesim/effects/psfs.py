@@ -46,7 +46,9 @@ class PSF(Effect):
                 if self.meta["normalise_kernel"] is True:
                     kernel /= np.sum(kernel)
                 image = obj.hdu.data.astype(float)
-                new_image = convolve(image, kernel, mode=mode)
+                y = min(image.shape[0], kernel.shape[0])
+                x = min(image.shape[1], kernel.shape[1])
+                new_image = convolve(image[:y, :x], kernel[:y, :x], mode=mode)
                 new_shape = new_image.shape
 
                 obj.hdu.data = new_image
